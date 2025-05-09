@@ -3,76 +3,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Daisy – Interactive AI Avatar</title>
+  <title>Choose Your Daisy</title>
   <style>
     body {
-      background-color: #000;
+      background-color: #111;
       color: white;
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+      text-align: center;
+      padding: 40px;
     }
     h1 {
-      margin-bottom: 1rem;
+      font-size: 3rem;
+      margin-bottom: 2rem;
     }
-    video {
-      max-width: 80vw;
+    .avatars {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .avatar {
+      background-color: #222;
       border-radius: 16px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      width: 200px;
+      transition: 0.3s;
     }
-    .buttons {
-      margin-top: 1rem;
-    }
-    input, button {
-      margin-top: 1rem;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      background-color: #f06;
-      color: white;
+    .avatar:hover {
+      background-color: #333;
       cursor: pointer;
-      margin-left: 10px;
     }
-    button:hover {
-      background-color: #c05;
+    .avatar img {
+      border-radius: 12px;
+      width: 100%;
+    }
+    .name {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>Talk to Daisy</h1>
-  <video id="daisyVideo" autoplay controls></video>
-  <div class="buttons">
-    <input type="text" id="userInput" placeholder="Ask Daisy something..." />
-    <button onclick="startChat()">Send</button>
+  <h1>Who Would You Like to Talk To?</h1>
+  <div class="avatars">
+    <a href="index.html?persona=emma">
+      <div class="avatar">
+        <img src="https://via.placeholder.com/200x200.png?text=Emma" alt="Emma">
+        <div class="name">Emma</div>
+      </div>
+    </a>
+    <a href="index.html?persona=ruby">
+      <div class="avatar">
+        <img src="https://via.placeholder.com/200x200.png?text=Ruby" alt="Ruby">
+        <div class="name">Ruby</div>
+      </div>
+    </a>
+    <a href="index.html?persona=violet">
+      <div class="avatar">
+        <img src="https://via.placeholder.com/200x200.png?text=Violet" alt="Violet">
+        <div class="name">Violet</div>
+      </div>
+    </a>
+    <a href="index.html?persona=zoe">
+      <div class="avatar">
+        <img src="https://via.placeholder.com/200x200.png?text=Zoe" alt="Zoe">
+        <div class="name">Zoe</div>
+      </div>
+    </a>
+    <a href="index.html?persona=skye">
+      <div class="avatar">
+        <img src="https://via.placeholder.com/200x200.png?text=Skye" alt="Skye">
+        <div class="name">Skye</div>
+      </div>
+    </a>
   </div>
-
-  <script>
-    const BOLT_WEBHOOK_URL = 'YOUR_BOLT_WEBHOOK_URL';
-
-    async function startChat(message) {
-      const userMessage = message || document.getElementById("userInput").value || "Hello Daisy";
-      const response = await fetch(BOLT_WEBHOOK_URL, {
-        method: 'POST',
-        body: JSON.stringify({ user_message: userMessage }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      const data = await response.json();
-      const video = document.getElementById("daisyVideo");
-      video.src = data.video_response?.result_url || '';
-    }
-
-    window.onload = () => {
-      startChat("Hello Daisy");
-    }
-  </script>
 </body>
 </html>
