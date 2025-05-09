@@ -49,6 +49,14 @@
 </head>
 <body>
   <h1>Who Would You Like to Talk To?</h1>
+  <!-- Chat box -->
+<input id="message" type="text" placeholder="Say something..." />
+
+<!-- Send button -->
+<button onclick="handleSend()">Send</button>
+
+<!-- Where Daisy's response will go -->
+<div id="chat-response"></div>
   <div class="avatars">
     <a href="index.html?persona=emma">
       <div class="avatar">
@@ -81,5 +89,32 @@
       </div>
     </a>
   </div>
+  <script>
+  async function sendToDaisy(userMessage, personaIntro) {
+    const response = await fetch(
+      'https://proj-57s-b4-f37ur1dhxgpblodcnpw0bgskwmoqx2se-umllt6ms0qk36a81pkz4vyv2wddvyclvu7rt3blbkfj6hz6rbnfwa9wo6crvulg2felophxhfivj-o9h5tuep.supabase.co/functions/v1/chat',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_message: userMessage,
+          persona_intro: personaIntro,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    return data.reply;
+  }
+
+  async function handleSend() {
+    const message = document.getElementById('message').value;
+    const persona = document.querySelector('.selected-persona')?.dataset.intro || "You are Daisy, the helpful AI.";
+    const reply = await sendToDaisy(message, persona);
+    document.getElementById('chat-response').innerText = reply;
+  }
+</script>
 </body>
 </html>
