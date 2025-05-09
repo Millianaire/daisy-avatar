@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daisy – Interactive AI Avatar</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    video {
+      max-width: 80vw;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    .buttons {
+      margin-top: 1rem;
+    }
+    input, button {
+      margin-top: 1rem;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #f06;
+      color: white;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    button:hover {
+      background-color: #c05;
+    }
+  </style>
+</head>
+<body>
+  <h1>Talk to Daisy</h1>
+  <video id="daisyVideo" autoplay controls></video>
+  <div class="buttons">
+    <input type="text" id="userInput" placeholder="Ask Daisy something..." />
+    <button onclick="startChat()">Send</button>
+  </div>
+
+  <script>
+    const BOLT_WEBHOOK_URL = 'YOUR_BOLT_WEBHOOK_URL';
+
+    async function startChat(message) {
+      const userMessage = message || document.getElementById("userInput").value || "Hello Daisy";
+      const response = await fetch(BOLT_WEBHOOK_URL, {
+        method: 'POST',
+        body: JSON.stringify({ user_message: userMessage }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      const video = document.getElementById("daisyVideo");
+      video.src = data.video_response?.result_url || '';
+    }
+
+    window.onload = () => {
+      startChat("Hello Daisy");
+    }
+  </script>
+</body>
+</html>
